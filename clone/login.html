@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+<title>방문예약페이지 - 로그인</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+<link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/member/style.css">
+<link rel="stylesheet" href="assets/common.css">
+<link rel="stylesheet" href="assets/layout.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+
+<div id="mb_login" class="mbskin">
+    <h1>로그인</h1>
+    <form name="flogin" action="http://www.reserve-apt2.co.kr/bbs/login_check.php" onsubmit="return flogin_submit(this);" method="post" id="flogin">
+    <input type="hidden" name="url" value="http%3A%2F%2Fwww.reserve-apt2.co.kr">
+    <div id="login_frm">
+        <label for="login_id" class="sound_only">아이디<strong class="sound_only"> 필수</strong></label>
+        <input type="text" name="mb_id" id="login_id" placeholder="아이디" required class="frm_input required" maxLength="20">
+        <label for="login_pw" class="sound_only">비밀번호<strong class="sound_only"> 필수</strong></label>
+        <input type="password" name="mb_password" id="login_pw" placeholder="비밀번호" required class="frm_input required" maxLength="20">
+        <div id="login_info" class="chk_box">
+            <input type="checkbox" name="auto_login" id="login_auto_login" class="selec_chk">
+            <label for="login_auto_login"><span></span> 자동로그인</label>
+        </div>
+        <button type="submit" class="btn_submit">로그인</button>
+    </div>
+    </form>
+</div>
+
+<script>
+jQuery(function($){
+    $("#login_auto_login").click(function(){
+        if (this.checked) {
+            this.checked = confirm("자동로그인을 사용하시면 다음부터 회원아이디와 비밀번호를 입력하실 필요가 없습니다.\n\n공공장소에서는 개인정보가 유출될 수 있으니 사용을 자제하여 주십시오.\n\n자동로그인을 사용하시겠습니까?");
+        }
+    });
+});
+function flogin_submit(f){ return true; }
+</script>
+
+</body>
+</html>

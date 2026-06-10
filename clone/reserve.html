@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+<title>방문예약페이지 - 예약접수</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+<link rel="stylesheet" href="assets/mobile.css">
+<link rel="stylesheet" href="assets/booking/wetoz_bootstrap.css">
+<link rel="stylesheet" href="assets/booking/style.css">
+<link rel="stylesheet" href="assets/booking/style_skin.css">
+<link rel="stylesheet" href="assets/common.css">
+<link rel="stylesheet" href="assets/layout.css">
+<script>
+var g5_url = "http://www.reserve-apt2.co.kr";
+var g5_bo_table = "reservation";
+</script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+
+<div id="wrap">
+	<div id="container">
+		<div class="gnb">
+			<div class="logo">
+				<a href="index.html"><i class="fas fa-history"></i> 방문<span>예약페이지</span></a>
+			</div>
+			<div class="tel">
+				<h1><i class="fas fa-headset"></i> <span class="mb">예약관련문의 : </span><span>010-9338-0809</span></h1>
+			</div>
+		</div>
+
+<div class="wetoz">
+<div class="booking">
+    <div class="title">
+        <p><i class="fas fa-exclamation-circle"></i> 원활한 행사진행을 위해 각각의 일자와 시간대에 <span>정해진 수량의 세대만 예약이 가능</span>합니다.</p>
+        <p><i class="fas fa-exclamation-circle"></i> <span>예약은 선착순</span>으로 진행됩니다. 만약 선택일자와 시간에 예약이 다 차게 되면 <span>예약이 불가</span>하오니 다른 일자와 시간을 선택 부탁드립니다.</p>
+		<p><i class="fas fa-exclamation-circle"></i> 희망 하시는 날짜와 시간을 선택하신 후 <span>예약</span>을 원하시는 날짜를 클릭해주세요.</p>
+		<p><i class="fas fa-exclamation-circle"></i> 예약은 <span>계약자 성함</span> 으로 예약해주시고 세대당 행사 기간내 <span>한번만 예약 가능</span>합니다.</p>
+		<p><i class="fas fa-exclamation-circle"></i> 동호수 입력은 숫자 4자리씩 맞춰서  <span>숫자만 기재</span>해주시기 바랍니다. ex)101-301 → 동입력:0101/호수입력:0301</p>
+    </div>
+    <div class="calendar" id="wrap-calendar" style="width:100%;min-height:300px;">
+
+<nav>
+<ul class="pager">
+    <li><a href="#none"><span class="hidden-xs">이전달</span><i class="fa fa-chevron-left visible-xs-inline" aria-hidden="true"></i></a></li>
+    <li><strong class="lead ym-title"><span class="text-number">2026</span><span class="text-hangul hidden-xs">년</span><span class="text-hangul visible-xs-inline">.</span> <span class="text-number">06</span><span class="text-hangul hidden-xs">월</span></strong></li>
+    <li><a href="#none"><span class="hidden-xs">다음달</span><i class="fa fa-chevron-right visible-xs-inline" aria-hidden="true"></i></a></li>
+</ul>
+</nav>
+
+<table class="table table-bordered tbl-canlendar">
+<caption>위토즈 실시간 예약플러그인 C형</caption>
+<thead>
+<tr>
+    <th class="sunday"><span class="text-red">일</span></th>
+    <th>월</th>
+    <th>화</th>
+    <th>수</th>
+    <th>목</th>
+    <th>금</th>
+    <th class="saturday"><span class="text-blue">토</span></th>
+</tr>
+</thead>
+<tbody>
+<tr height="30" class="date">
+    <td class="prev"></td>
+    <td class="imposs"><div class="text-center day">1</div></td>
+    <td class="imposs"><div class="text-center day">2</div></td>
+    <td class="imposs"><div class="text-center day">3</div></td>
+    <td class="imposs"><div class="text-center day">4</div></td>
+    <td class="imposs"><div class="text-center day">5</div></td>
+    <td class="imposs"><div class="text-center day">6</div></td>
+</tr>
+<tr height="30" class="date">
+    <td class="imposs"><div class="text-center day">7</div></td>
+    <td class="imposs"><div class="text-center day">8</div></td>
+    <td class="imposs"><div class="text-center day">9</div></td>
+    <td class="imposs"><div class="text-center day">10</div></td>
+    <td class="live"><a href="#none" class="text-center day rnfo" data-date="2026-06-11"><span class="day">11</span> <div class="m-remain-cnt">(잔여19)</div></a></td>
+    <td class="live"><a href="#none" class="text-center day rnfo" data-date="2026-06-12"><span class="day">12</span> <div class="m-remain-cnt">(잔여7)</div></a></td>
+    <td class="imposs"><div class="text-center day">13<div>마감</div></div></td>
+</tr>
+<tr height="30" class="date">
+    <td class="imposs"><div class="text-center day">14<div>마감</div></div></td>
+    <td class="live"><a href="#none" class="text-center day rnfo" data-date="2026-06-15"><span class="day">15</span> <div class="m-remain-cnt">(잔여2)</div></a></td>
+    <td class="imposs"><div class="text-center day">16</div></td>
+    <td class="imposs"><div class="text-center day">17</div></td>
+    <td class="imposs"><div class="text-center day">18</div></td>
+    <td class="imposs"><div class="text-center day">19</div></td>
+    <td class="imposs"><div class="text-center day">20</div></td>
+</tr>
+<tr height="30" class="date">
+    <td class="imposs"><div class="text-center day">21</div></td>
+    <td class="imposs"><div class="text-center day">22</div></td>
+    <td class="imposs"><div class="text-center day">23</div></td>
+    <td class="imposs"><div class="text-center day">24</div></td>
+    <td class="imposs"><div class="text-center day">25</div></td>
+    <td class="imposs"><div class="text-center day">26</div></td>
+    <td class="imposs"><div class="text-center day">27</div></td>
+</tr>
+<tr height="30" class="date">
+    <td class="imposs"><div class="text-center day">28</div></td>
+    <td class="imposs"><div class="text-center day">29</div></td>
+    <td class="imposs"><div class="text-center day">30</div></td>
+    <td class="next"></td>
+    <td class="next"></td>
+    <td class="next"></td>
+    <td class="next sat"></td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+    <div class="info">
+        <div class="apt_name">
+            <h1>태화강 센트럴 아이파크 유상 옵션 계약</h1>
+        </div>
+        <div class="line"></div>
+        <div class="txt">
+            <p><i class="far fa-calendar-alt"></i> 행사기간 : 2026년06월10일(수) ~ 2026년06월15일(월)</p>
+        </div>
+    </div>
+    <form name="wzfrm" id="wzfrm" method="post" action="http://www.reserve-apt2.co.kr/plugin/wz.booking.place/step.1.update.php" autocomplete="off">
+    <input type="hidden" name="rm_ix"    id="rm_ix"    value="3" />
+    <input type="hidden" name="sch_day"  id="sch_day"  value="" />
+    <input type="hidden" name="bo_table" id="bo_table" value="reservation" />
+    <div class="form">
+        <ul>
+            <li><input type="text" id="bk_name" name="bk_name" placeholder="계약자 이름" value="" maxlength="20" class="ipfull"></li>
+            <li>
+				<dl>
+					<dt><input type="text" id="bk_build_no1" name="bk_build_no1" placeholder="동 입력" value="" maxlength="4" class="ipfull" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></dt>
+					<dt><input type="text" id="bk_build_no2" name="bk_build_no2" placeholder="호수 입력" value="" maxlength="4" class="ipfull" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></dt>
+				</dl>
+			</li>
+            <li><input type="text" id="bk_hp" name="bk_hp" value="" placeholder="계약자 연락처" maxlength="20" class="ipfull" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></li>
+            <li><input type="text" id="sch_day_str" name="sch_day_str" placeholder="달력에서 날짜 선택시 자동 입력" readonly class="ipfull"></li>
+			<li><p>※계약자 이름과 계약자 연락처를 입력해주셔야 정상적으로 예약이 완료됩니다.</p></li>
+			<li>
+                <select id="rmt_ix" name="rmt_ix" class="ipfull">
+                    <option value="">참여 시간대 선택</option>
+                </select>
+            </li>
+            <li>
+                <select id="bk_cnt" name="bk_cnt" class="ipfull">
+                    <option value="">참여 인원수 선택</option>
+                </select>
+            </li>
+            <li class="txtar">
+<textarea class="txfull" readonly>[개인정보 처리방침]
+안녕하세요. 저희 방문 예약에 참여해 주셔서 진심으로 감사드립니다.
+주)팀레드는 아파트 방문 행사 대행업체로서 방문 예약을 희망하는 고객님을 위해 예약 서비스를 진행하고 있으며 고객님의 개인정보를 일부 수집하고 있습니다.
+본 예약 시스템을 통해 신청 시 고객님의 개인정보가 웹서버에 저장되오니 심사숙고하여 신청해 주시기 바랍니다.
+1. 개인정보의 수집 - 이용 목적 : 아파트 방문 행사 예약을 위한 상담 및 예약 서비스 제공
+2. 수집하는 개인정보 항목 : 이름, 연락처, 동호수, 참여시간, 참여날짜
+3. 개인정보의 보유 : 신청 후 3개월 보관 (요청 시 즉시 파기).</textarea>
+            </li>
+            <li class="agree">
+                <label><input type="checkbox" id="agree1" name="agree1" value="1">&nbsp;<span>개인정보 처리방침에 동의합니다.</span></label>
+            </li>
+            <li><button type="button" class="btn_04" onclick="getNext(document.forms.wzfrm);">예약하기</button></li>
+        </ul>
+    </div>
+    </form>
+</div>
+</div>
+
+		<div class="ft">
+			<div class="ft_logo">
+				<img src="img/ft_logo.png" alt="logo">
+			</div>
+			<div class="ft_txt">
+				<h1 class="ft_logo">방문예약페이지</h1>
+				<p>APART RESERVATION SYSTEM</p>
+			</div>
+			<div class="adm_link">
+				<a href="login.html">[관리자모드]</a>
+			</div>
+		</div>
+	</div><!-- END container-->
+</div><!-- END wrap-->
+
+<script>
+// 날짜 클릭 → 자동 입력 (정적 클론 데모)
+$(function(){
+    $(document).on('click', '.tbl-canlendar .rnfo', function(e){
+        e.preventDefault();
+        $('.tbl-canlendar td').removeClass('danger');
+        var d = $(this).attr('data-date');
+        $(this).parent().addClass('danger');
+        $('#sch_day').val(d);
+        $('#sch_day_str').val(d);
+    });
+});
+function getNext(f){
+    if(!f.bk_name.value){alert("신청자명을 입력해주세요.");f.bk_name.focus();return;}
+    if(!f.bk_build_no1.value){alert("동을 입력해주세요.");f.bk_build_no1.focus();return;}
+    if(!f.bk_build_no2.value){alert("호수를 입력해주세요.");f.bk_build_no2.focus();return;}
+    if(!f.bk_hp.value){alert("연락처를 입력해주세요.");f.bk_hp.focus();return;}
+    if(!f.sch_day.value){alert("예약하실 날짜를 선택해주세요.");return;}
+    if(f.rmt_ix.selectedIndex==0){alert("참여 가능한 시간대를 선택해주세요.");return;}
+    if(f.bk_cnt.selectedIndex==0){alert("참여 인원수를 선택해주세요.");return;}
+    if(f.agree1.checked==false){alert("개인정보 처리방침에 동의후 예약이 가능합니다.");f.agree1.focus();return;}
+    if(confirm("예약하시겠습니까?")){ f.submit(); }
+}
+</script>
+
+</body>
+</html>

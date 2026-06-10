@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=0,maximum-scale=10,user-scalable=yes">
+<meta name="format-detection" content="telephone=no">
+<title>방문예약페이지 - 예약확인</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+<link rel="stylesheet" href="assets/common.css">
+<link rel="stylesheet" href="assets/layout.css">
+</head>
+<body>
+
+<div id="wrap">
+	<div id="container">
+		<div class="gnb">
+			<div class="logo">
+				<a href="index.html"><i class="fas fa-history"></i> 방문<span>예약페이지</span></a>
+			</div>
+			<div class="tel">
+				<h1><i class="fas fa-headset"></i> <span class="mb">예약관련문의 : </span><span>010-9338-0809</span></h1>
+			</div>
+		</div>
+
+<div class="wetoz">
+<div class="check">
+    <form method="post" name="wzfrm" id="wzfrm" action="http://www.reserve-apt2.co.kr/bbs/board.php?bo_table=reservation&cp_code=" onsubmit="return getNext();">
+    <input type="hidden" name="mode" id="mode" value="orderlist" />
+    <div class="area">
+        <div class="icon">
+            <i class="far fa-bell"></i>
+        </div>
+        <div class="title">
+            <h1>예약확인하기</h1>
+            <p><i class="fas fa-exclamation-circle"></i> 예약시 입력하신 이름과 휴대폰번호를 입력하시면 <br class="pc">예약현황이 출력됩니다.</p>
+        </div>
+        <div class="ck_box">
+            <ul>
+                <li><input type="text" name="user_nm" id="user_nm" value="" class="ipfull" placeholder="예약자명"></li>
+                <li><input type="text" name="user_hp" id="user_hp" class="ipfull" placeholder="핸드폰번호"></li>
+            </ul>
+        </div>
+        <div class="ck_btn">
+            <button type="submit" class="btn_04">예약확인</button>
+        </div>
+    </div>
+    </form>
+</div>
+</div>
+
+		<div class="ft">
+			<div class="ft_logo">
+				<img src="img/ft_logo.png" alt="logo">
+			</div>
+			<div class="ft_txt">
+				<h1 class="ft_logo">방문예약페이지</h1>
+				<p>APART RESERVATION SYSTEM</p>
+			</div>
+			<div class="adm_link">
+				<a href="login.html">[관리자모드]</a>
+			</div>
+		</div>
+	</div><!-- END container-->
+</div><!-- END wrap-->
+
+<script>
+function getNext() {
+    var f = document.forms.wzfrm;
+    if (!f.user_nm.value) { alert("예약자명을 입력해주세요."); f.user_nm.focus(); return false; }
+    if (!f.user_hp.value) { alert("핸드폰번호를 입력해주세요."); f.user_hp.focus(); return false; }
+    return true;
+}
+</script>
+
+</body>
+</html>

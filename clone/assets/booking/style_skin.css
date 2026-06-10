@@ -1,0 +1,80 @@
+@charset "utf-8";
+
+.wetoz .form-control.inline-fix {display:inline-block;}
+
+
+
+#room-select-form .list-group {margin-bottom:0px;}
+#room-select-form .list-group .label-title {height:19px;display:inline-block;line-height:19px;}
+
+.wetoz select.cal_room_adult,.wetoz select.cal_room_child,.wetoz select.cal_room_baby{width:72px}
+
+.info .desc {font-family:'돋움',Dotum,Verdana,applegothic;font-size:11px;letter-spacing:-1px;font-weight:400;color:#7b7b7b}
+
+#room-select-list .more {font-size:12px;}
+ul.bx-times {margin: 0 0 25px;padding: 0;list-style: none;}
+ul.bx-times:after {display:block;visibility:hidden;clear:both;content:''}
+ul.bx-times li {display: inline-block;list-style: none;margin:10px 0;}
+ul.bx-times li .btn-time {display:block;color:#000;margin-right:10px;border-radius: 3px;padding:10px 36px;font-size:14px;text-align:center;border:1px solid #dfdfdf}
+ul.bx-times li .btn-time.active {background-color:#F6FAFF;color:#428bca;font-weight:bold}
+ul.bx-times li .btn-time.closed {background-color:#f3f3f3;color:#989898}
+ul.bx-times li .btn-time .remain-cnt {display:block; font: normal 11px/1.2 'verdana';margin-bottom:2px;}
+
+.bx-reserv {border:1px solid #e3e3e3;background-color:#fff;}
+.bx-reserv:after {display:block;visibility:hidden;clear:both;content:''}
+.bxframe {vertical-align:top;display:table-row;}
+.bxframe.fm-room, .bxframe.fm-day, .bxframe.fm-time {width:100%;}
+
+.bxframe .empty {text-align:center;padding:0px 0;font-family: '돋움',Dotum,Verdana,applegothic;font-size: 11px;letter-spacing: -1px;font-weight: 400;}
+.bxframe .head {padding:10px;background:#f7f7f7}
+.bxframe .list {}
+
+.bxframe.fm-room .list {list-style:none;padding:10px;margin:0;}
+.bxframe.fm-room .list .roomli {display:block;padding:5px;margin:4px 0;border:1px solid #fff}
+.bxframe.fm-room .list .roomli:hover, .bxframe.fm-room .list .roomli.active {text-decoration:none;border:1px solid #000}
+.bxframe.fm-room .list .roomli .room-photo-frame {border:1px solid #e3e3e3;}
+
+.bxframe.fm-day .list {padding:10px 0;}
+.bxframe.fm-day .list .daylist {width:80px;margin:10px auto 0;}
+.bxframe.fm-day .list .daylist .dayli {display:block;padding:2px;margin:2px 0;border:1px solid #fff;text-align:center;text-decoration:none;}
+.bxframe.fm-day .list .daylist .dayli.live:hover, .bxframe.fm-day .daylist .dayli.live.active, .bxframe.fm-day .bx-calendar .dayli.live:hover, .bxframe.fm-day .bx-calendar .dayli.live.active {border:1px solid #000}
+.bxframe.fm-day .list .daylist .dayli .txweek {}
+.bxframe.fm-day .list .daylist .dayli .box-sun {color:#d62b2b}
+.bxframe.fm-day .list .daylist .dayli .box-sat {color:#4242ce}
+.bxframe.fm-day .list .daylist .dayli .closed {color:#dfdfdf}
+.bxframe.fm-day .list .daylist .dayli .txday {font-size:14px;font-weight:bold}
+
+.bxframe.fm-time .list {padding:10px 0;}
+.bxframe.fm-time .list .btn-time {float:left;width:50%;text-align:center;padding:0px;}
+.bxframe.fm-time .list .btn-time a.timeli {margin:3px 6px;display:block;border:1px solid #dfdfdf;padding:7px;border-radius: 5px;text-decoration:none;}
+.bxframe.fm-time .list .btn-time a.timeli.live:hover, .bxframe.fm-time .list .btn-time a.timeli.live.active {border:1px solid #000}
+.bxframe.fm-time .list .btn-time a.timeli .closed {color:#dfdfdf}
+.bxframe.fm-time .list .btn-time a.timeli .remainc {display:block;font-family:'Montserrat';font-size: 11px;letter-spacing: -1px;font-weight: 400;}
+.bxframe.fm-time .list .btn-time a.timeli .txtms {font-weight:bold}
+.bxframe.fm-time .list .btn-time:nth-child(2n) a.timeli {margin-left:0px;}
+.bxframe.fm-time .list .wrap-time:after {display:block;visibility:hidden;clear:both;content:''}
+
+.ax-loading {text-align:center;margin:10px;}
+
+.wetoz .pager {margin:0;}
+.wetoz .pager li > a, .wetoz .pager li > span {padding: 5px 3px;}
+
+
+@media (max-width: 767px) { /* xs */
+	
+}
+@media (min-width: 768px) { /* sm */
+
+}
+@media (min-width: 992px) { /* md */
+    
+    .bxframe {display:table-cell;}
+    .bxframe.fm-room {width:63%;border-right:1px solid #e3e3e3;}
+    .bxframe.fm-day {width:17%;border-right:1px solid #e3e3e3;}
+    .bxframe.fm-time {width:20%}
+    .bxframe .list {height:300px;overflow-x:auto}
+    .ax-loading {text-align:center;margin-top:50px;}
+}
+@media (min-width: 1200px) { /* lg */
+
+}
