@@ -1,0 +1,64 @@
+// 방문예약 시스템 데이터 모델
+// Why: 관리자 인증(Phase 1)과 예약 도메인(Phase 2~)을 단일 마이그레이션으로 일관 관리
+// 로컬 개발은 SQLite, 프로덕션(Vercel)은 DATABASE_URL을 Postgres(Neon)로 교체
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// 관리자 계정 (ID/비밀번호는 여기서 직접 관리, 비밀번호는 bcrypt 해시 저장)
+model Admin {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  isSuper      Boolean  @default(false) // 최고관리자 여부
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// 행사(아파트 방문 이벤트)
+model Event {
+  id        Int      @id @default(autoincrement())
+  title     String // 예: 태화강 센트럴 아이파크 유상 옵션 계약
+  startDate DateTime
+  endDate   DateTime
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  slots     TimeSlot[]
+}
+
+/// 시간대별 예약 가능 슬롯 (날짜 + 시간대 + 정원)
+model TimeSlot {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  date      DateTime // 방문 날짜 (자정 기준)
+  label     String // 시간대 표기, 예: "10:00 ~ 11:00"
+  capacity  Int      @default(0) // 해당 슬롯 총 정원
+  sortOrder Int      @default(0)
+  reservations Reservation[]
+
+  @@index([eventId, date])
+}
+
+/// 예약 접수 내역
+model Reservation {
+  id        Int      @id @default(autoincrement())
+  slotId    Int
+  slot      TimeSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  name      String // 계약자 이름
+  dong      String // 동 (4자리 숫자 문자열)
+  ho        String // 호수 (4자리 숫자 문자열)
+  phone     String // 연락처 (숫자만)
+  headcount Int      @default(1) // 참여 인원수
+  status    String   @default("confirmed") // confirmed | canceled
+  createdAt DateTime @default(now())
+
+  @@index([phone])
+  @@index([slotId])
+}
