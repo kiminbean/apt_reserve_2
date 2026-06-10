@@ -112,10 +112,12 @@ export function transformSlotsToDateSlots(slots: ApiSlot[]): DateSlot[] {
   const dateMap = new Map<string, ApiSlot[]>();
 
   for (const slot of slots) {
-    // TimeSlot.date는 로컬 자정 Date. ISO 문자열의 앞 10자리가 날짜 부분.
-    const dateStr = typeof slot.date === 'string'
-      ? slot.date.slice(0, 10)
-      : new Date(slot.date).toISOString().slice(0, 10);
+    // TimeSlot.date는 KST 자정 = UTC 15:00(전날). UTC 앞 10자리를 그대로 쓰면
+    //   하루 앞 날짜로 밀리므로(예: 06-11이 06-10으로) 반드시 KST 기준으로 날짜를 추출한다.
+    // en-CA 로케일은 'YYYY-MM-DD' 포맷을 보장한다.
+    const dateStr = new Date(slot.date).toLocaleDateString('en-CA', {
+      timeZone: 'Asia/Seoul',
+    });
 
     if (!dateMap.has(dateStr)) {
       dateMap.set(dateStr, []);

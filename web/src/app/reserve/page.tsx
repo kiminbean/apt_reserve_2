@@ -126,16 +126,16 @@ export default function ReservePage() {
       <main className="bg-white py-[50px] px-5 max-w-[1000px] mx-auto">
         {/* 공지사항 */}
         <div className="border border-[#e5e5e5] bg-[#fafafa] rounded-[5px] p-[10px] text-left mb-5">
-          <p className="text-[12px] font-normal leading-[22px] m-0">
+          <p className="text-[12px] font-normal leading-[22px] mt-0 mb-[8.5px]">
             <i className="fas fa-exclamation-circle" /> 원활한 행사진행을 위해 각각의 일자와 시간대에 <span className="font-semibold">정해진 수량의 세대만 예약이 가능</span>합니다.
           </p>
-          <p className="text-[12px] font-normal leading-[22px] m-0">
+          <p className="text-[12px] font-normal leading-[22px] mt-0 mb-[8.5px]">
             <i className="fas fa-exclamation-circle" /> <span className="font-semibold">예약은 선착순</span>으로 진행됩니다. 만약 선택일자와 시간에 예약이 다 차게 되면 <span className="font-semibold">예약이 불가</span>하오니 다른 일자와 시간을 선택 부탁드립니다.
           </p>
-          <p className="text-[12px] font-normal leading-[22px] m-0">
+          <p className="text-[12px] font-normal leading-[22px] mt-0 mb-[8.5px]">
             <i className="fas fa-exclamation-circle" /> 희망 하시는 날짜와 시간을 선택하신 후 <span className="font-semibold">예약</span>을 원하시는 날짜를 클릭해주세요.
           </p>
-          <p className="text-[12px] font-normal leading-[22px] m-0">
+          <p className="text-[12px] font-normal leading-[22px] mt-0 mb-[8.5px]">
             <i className="fas fa-exclamation-circle" /> 예약은 <span className="font-semibold">계약자 성함</span> 으로 예약해주시고 세대당 행사 기간내 <span className="font-semibold">한번만 예약 가능</span>합니다.
           </p>
           <p className="text-[12px] font-normal leading-[22px] m-0">

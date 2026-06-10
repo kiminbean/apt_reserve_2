@@ -213,8 +213,8 @@ export default function Calendar({ slots, selectedDate, onDateSelect }: Calendar
                 const isSunday = cellIdx === 0;
                 const isSaturday = cellIdx === 6;
 
-                // 기본 클래스
-                let tdClass = 'border border-[#ddd] align-middle';
+                // 기본 클래스 (원본: td padding 8px, vertical-align top)
+                let tdClass = 'border border-[#ddd] p-[8px] align-top';
 
                 if (cell.status === 'empty') {
                   // 빈 셀
@@ -228,7 +228,7 @@ export default function Calendar({ slots, selectedDate, onDateSelect }: Calendar
                   if (isSaturday) tdClass += ' bg-[#F6FAFF]';
                   return (
                     <td key={cellIdx} className={tdClass}>
-                      <div className="text-center py-[10px] sm:py-0 block sm:table-cell">
+                      <div className="text-center">
                         <span
                           className={`font-['Montserrat'] text-[11px] ${
                             cell.remaining === 0 && cell.fullDate
@@ -274,7 +274,7 @@ export default function Calendar({ slots, selectedDate, onDateSelect }: Calendar
                       }
                     }}
                   >
-                    <div className="text-center py-[10px] sm:py-0 block sm:table-cell">
+                    <div className="text-center">
                       <span
                         className={`block font-['Montserrat'] text-[11px] pb-[3px] border-b border-dotted border-[#ece7e7] ${
                           isSunday
