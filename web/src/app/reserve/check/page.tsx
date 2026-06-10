@@ -70,7 +70,7 @@ export default function CheckPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
+    <div className="min-h-screen flex flex-col bg-[#f5f5f5]" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
       {/* GNB 헤더 */}
       <header className="bg-white h-[80px] leading-[80px] px-5 mb-[10px] max-w-[1000px] mx-auto">
         <div className="flex items-center justify-between">
@@ -88,7 +88,7 @@ export default function CheckPage() {
       </header>
 
       {/* 예약 확인 영역 */}
-      <main className="bg-white py-[50px] px-5 max-w-[1000px] mx-auto">
+      <main className="bg-white py-[50px] px-5 max-w-[1000px] w-full mx-auto flex-1">
         <div className="w-full sm:w-1/2 mx-auto">
           {/* 아이콘 */}
           <div className="text-center mb-5">
