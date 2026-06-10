@@ -92,28 +92,14 @@ export default function CheckPage() {
         <div className="w-full sm:w-1/2 mx-auto">
           {/* 아이콘 */}
           <div className="text-center mb-5">
-            <svg
-              className="w-[50px] h-[50px] mx-auto text-[#424242]"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-              />
-            </svg>
+            <i className="far fa-bell text-[50px] text-[#424242]" aria-hidden="true" />
           </div>
 
           {/* 제목 */}
           <div className="text-center mb-5">
             <h1 className="text-[17px] font-semibold m-0">예약확인하기</h1>
             <p className="text-[12px] text-[#878787] font-normal mt-[10px] mb-0">
-              예약시 입력하신 이름과 휴대폰번호를 입력하시면 예약현황이 출력됩니다.
+              <i className="fas fa-exclamation-circle" /> 예약시 입력하신 이름과 휴대폰번호를 입력하시면 예약현황이 출력됩니다.
             </p>
           </div>
 

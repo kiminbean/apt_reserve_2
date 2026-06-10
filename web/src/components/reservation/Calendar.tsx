@@ -276,7 +276,7 @@ export default function Calendar({ slots, selectedDate, onDateSelect }: Calendar
                   >
                     <div className="text-center py-[10px] sm:py-0 block sm:table-cell">
                       <span
-                        className={`font-['Montserrat'] text-[11px] ${
+                        className={`block font-['Montserrat'] text-[11px] pb-[3px] border-b border-dotted border-[#ece7e7] ${
                           isSunday
                             ? 'text-[#d9534f]'
                             : isSaturday
