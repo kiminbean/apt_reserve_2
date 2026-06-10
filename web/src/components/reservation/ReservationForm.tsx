@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
-import type { TimeSlot } from '@/types/reservation';
+import type { CalendarTimeSlot } from '@/types/reservation';
 import TimeSlotSelector from './TimeSlotSelector';
 
 // 개인정보 처리방침 텍스트
@@ -15,7 +15,7 @@ const PRIVACY_POLICY = `[개인정보 처리방침]
 
 interface ReservationFormProps {
   selectedDate: string | null;
-  timeSlots: TimeSlot[];
+  timeSlots: CalendarTimeSlot[];
   onSubmit: (formData: {
     name: string;
     building: string;
@@ -46,7 +46,8 @@ export default function ReservationForm({
 
   // 선택된 시간대의 잔여 인원
   const selectedSlot = useMemo(
-    () => timeSlots.find((s) => s.id === selectedSlotId),
+    // Why: HTML select value는 항상 string이므로 number id를 문자열로 비교
+    () => timeSlots.find((s) => String(s.id) === selectedSlotId),
     [timeSlots, selectedSlotId]
   );
 

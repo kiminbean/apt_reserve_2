@@ -2,51 +2,43 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import type { EventResponse, DateSlot, TimeSlot, CreateReservationResponse } from '@/types/reservation';
+import type { EventResponse, DateSlot, CreateReservationResponse } from '@/types/reservation';
+import { transformSlotsToDateSlots } from '@/types/reservation';
 import Calendar from '@/components/reservation/Calendar';
 import ReservationForm from '@/components/reservation/ReservationForm';
-
-// 임시 데모용 슬롯 데이터 (API 연동 전까지 사용)
-const DEMO_SLOTS: DateSlot[] = [
-  { date: '2026-06-11', remaining: 19, isAvailable: true, timeSlots: [
-    { id: 'ts-1', startTime: '10:00', endTime: '11:00', capacity: 20, remaining: 10 },
-    { id: 'ts-2', startTime: '14:00', endTime: '15:00', capacity: 20, remaining: 9 },
-  ]},
-  { date: '2026-06-12', remaining: 7, isAvailable: true, timeSlots: [
-    { id: 'ts-3', startTime: '10:00', endTime: '11:00', capacity: 20, remaining: 4 },
-    { id: 'ts-4', startTime: '14:00', endTime: '15:00', capacity: 20, remaining: 3 },
-  ]},
-  { date: '2026-06-13', remaining: 0, isAvailable: false, timeSlots: [] },
-  { date: '2026-06-14', remaining: 0, isAvailable: false, timeSlots: [] },
-  { date: '2026-06-15', remaining: 2, isAvailable: true, timeSlots: [
-    { id: 'ts-5', startTime: '10:00', endTime: '11:00', capacity: 20, remaining: 2 },
-  ]},
-];
+import type { CalendarTimeSlot } from '@/types/reservation';
 
 export default function ReservePage() {
-  const [slots, setSlots] = useState<DateSlot[]>(DEMO_SLOTS);
+  const [slots, setSlots] = useState<DateSlot[]>([]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // API에서 이벤트 데이터 로드 (향후 백엔드 연동 시 활성화)
+  // API에서 행사+슬롯 데이터 로드
   useEffect(() => {
     async function loadEventData() {
       try {
         const res = await fetch('/api/reservations/event');
         if (res.ok) {
           const data: EventResponse = await res.json();
-          setSlots(data.slots);
+          // flat API 슬롯 → Calendar용 DateSlot[] 변환
+          setSlots(transformSlotsToDateSlots(data.slots));
+        } else {
+          setErrorMessage('현재 진행 중인 행사가 없습니다.');
         }
       } catch {
-        // API 미연동 시 데모 데이터 사용
+        setErrorMessage('행사 정보를 불러오는 중 오류가 발생했습니다.');
+      } finally {
+        setIsLoading(false);
       }
     }
     loadEventData();
   }, []);
 
   /** 선택된 날짜의 시간대 슬롯 */
-  const currentTimeSlots: TimeSlot[] = selectedDate
+  const currentTimeSlots: CalendarTimeSlot[] = selectedDate
     ? slots.find((s) => s.date === selectedDate)?.timeSlots ?? []
     : [];
 
@@ -54,6 +46,7 @@ export default function ReservePage() {
   const handleDateSelect = useCallback((date: string) => {
     setSelectedDate(date);
     setSuccessMessage(null);
+    setErrorMessage(null);
   }, []);
 
   /** 폼 제출 핸들러 */
@@ -70,34 +63,40 @@ export default function ReservePage() {
     }) => {
       setIsSubmitting(true);
       setSuccessMessage(null);
+      setErrorMessage(null);
 
       try {
+        // Why: 폼 필드명(building/unit/count/timeSlotId:string)을
+        //   API가 기대하는 필드명(buildingNo/unitNo/headCount/timeSlotId:number)으로 변환
         const res = await fetch('/api/reservations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            name: formData.name,
+            buildingNo: formData.building,
+            unitNo: formData.unit,
+            phone: formData.phone,
+            timeSlotId: Number(formData.timeSlotId),
+            headCount: formData.count,
+          }),
         });
 
-        if (res.ok) {
-          const result: CreateReservationResponse = await res.json();
-          if (result.success) {
-            setSuccessMessage(
-              `${formData.name}님, 예약이 완료되었습니다.\n날짜: ${formData.date}\n인원: ${formData.count}명`
-            );
-          } else {
-            alert(result.error || '예약에 실패했습니다. 다시 시도해주세요.');
-          }
-        } else {
-          // API 미연동 시 성공으로 처리 (데모)
+        const result: CreateReservationResponse = await res.json();
+
+        if (res.ok && result.success) {
+          const r = result.reservation;
+          // 날짜 포맷: API가 Date 객체를 반환할 수 있으므로 안전하게 처리
+          const dateStr = r?.date
+            ? new Date(r.date).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })
+            : formData.date;
           setSuccessMessage(
-            `${formData.name}님, 예약이 완료되었습니다.\n날짜: ${formData.date}\n인원: ${formData.count}명`
+            `${formData.name}님, 예약이 완료되었습니다.\n날짜: ${dateStr}\n인원: ${formData.count}명`
           );
+        } else {
+          setErrorMessage(result.error || '예약에 실패했습니다. 다시 시도해주세요.');
         }
       } catch {
-        // 네트워크 오류 시 데모 성공 처리
-        setSuccessMessage(
-          `${formData.name}님, 예약이 완료되었습니다.\n날짜: ${formData.date}\n인원: ${formData.count}명`
-        );
+        setErrorMessage('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
       } finally {
         setIsSubmitting(false);
       }
@@ -144,29 +143,47 @@ export default function ReservePage() {
           </p>
         </div>
 
-        {/* 달력 */}
-        <div className="my-5">
-          <Calendar
-            slots={slots}
-            selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
-          />
-        </div>
+        {/* 로딩 상태 */}
+        {isLoading && (
+          <div className="text-center py-10 text-[#777]">
+            <p className="text-[15px] m-0">행사 정보를 불러오는 중...</p>
+          </div>
+        )}
+
+        {/* 에러 메시지 */}
+        {errorMessage && !isLoading && (
+          <div className="max-w-[50%] mx-auto mb-5 p-5 bg-[#f2dede] border border-[#ebccd1] rounded-[5px] text-center">
+            <p className="text-[15px] text-[#a94442] font-semibold m-0">{errorMessage}</p>
+          </div>
+        )}
+
+        {/* 달력 — 데이터 로드 완료 후에만 렌더 */}
+        {!isLoading && !errorMessage && slots.length > 0 && (
+          <div className="my-5">
+            <Calendar
+              slots={slots}
+              selectedDate={selectedDate}
+              onDateSelect={handleDateSelect}
+            />
+          </div>
+        )}
 
         {/* 이벤트 정보 */}
-        <div className="text-center border-t border-[#e5e5e5] pt-5">
-          <div className="mb-2">
-            <h1 className="text-[30px] font-normal text-black m-0">
-              태화강 센트럴 아이파크 유상 옵션 계약
-            </h1>
+        {!isLoading && slots.length > 0 && (
+          <div className="text-center border-t border-[#e5e5e5] pt-5">
+            <div className="mb-2">
+              <h1 className="text-[30px] font-normal text-black m-0">
+                태화강 센트럴 아이파크 유상 옵션 계약
+              </h1>
+            </div>
+            <div className="w-[5%] h-[3px] bg-[#fd391f] mx-auto my-5" />
+            <div>
+              <p className="text-[19px] font-semibold text-black m-0">
+                행사기간 : 2026년06월10일(수) ~ 2026년06월15일(월)
+              </p>
+            </div>
           </div>
-          <div className="w-[5%] h-[3px] bg-[#fd391f] mx-auto my-5" />
-          <div>
-            <p className="text-[19px] font-semibold text-black m-0">
-              행사기간 : 2026년06월10일(수) ~ 2026년06월15일(월)
-            </p>
-          </div>
-        </div>
+        )}
 
         {/* 예약 성공 메시지 */}
         {successMessage && (
@@ -177,13 +194,15 @@ export default function ReservePage() {
           </div>
         )}
 
-        {/* 예약 폼 */}
-        <ReservationForm
-          selectedDate={selectedDate}
-          timeSlots={currentTimeSlots}
-          onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-        />
+        {/* 예약 폼 — 날짜 선택 후에만 활성화 */}
+        {!isLoading && !errorMessage && slots.length > 0 && (
+          <ReservationForm
+            selectedDate={selectedDate}
+            timeSlots={currentTimeSlots}
+            onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+          />
+        )}
       </main>
 
       {/* 하단 푸터 */}

@@ -2,13 +2,13 @@
 
 import { useState, useCallback } from 'react';
 import Link from 'next/link';
-import type { LookupResponse, ReservationDetail } from '@/types/reservation';
+import type { LookupResponse, LookupReservation } from '@/types/reservation';
 
 export default function CheckPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [reservations, setReservations] = useState<ReservationDetail[]>([]);
+  const [reservations, setReservations] = useState<LookupReservation[]>([]);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,7 +32,7 @@ export default function CheckPage() {
     try {
       const params = new URLSearchParams({
         name: name.trim(),
-        phone: phone.trim(),
+        phone: phone.trim().replace(/\D/g, ''),
       });
       const res = await fetch(`/api/reservations/lookup?${params}`);
 
@@ -40,17 +40,34 @@ export default function CheckPage() {
         const data: LookupResponse = await res.json();
         setReservations(data.reservations);
       } else {
-        // API 미연동 시 빈 결과
+        const data = await res.json();
+        setError(data.error || '조회 중 오류가 발생했습니다.');
         setReservations([]);
       }
     } catch {
-      // 네트워크 오류 시 빈 결과
+      setError('네트워크 오류가 발생했습니다.');
       setReservations([]);
     } finally {
       setIsLoading(false);
       setSearched(true);
     }
   }, [name, phone]);
+
+  /** 날짜 포맷팅 헬퍼 */
+  function formatDate(dateStr: string): string {
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    } catch {
+      return dateStr;
+    }
+  }
+
+  /** 상태 표시 */
+  function statusLabel(status: string): string {
+    return status === 'confirmed' ? '확인' : '취소';
+  }
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
@@ -176,10 +193,10 @@ export default function CheckPage() {
                       className="list-none p-0 m-0 flex border-b border-[#e5e5e5]"
                     >
                       <li className="w-[20%] text-center py-5">{res.name}</li>
-                      <li className="w-[15%] text-center py-5">{res.building}</li>
-                      <li className="w-[15%] text-center py-5">{res.unit}</li>
-                      <li className="w-[20%] text-center py-5">{res.date}</li>
-                      <li className="w-[15%] text-center py-5">{res.timeSlot}</li>
+                      <li className="w-[15%] text-center py-5">{res.buildingNo}</li>
+                      <li className="w-[15%] text-center py-5">{res.unitNo}</li>
+                      <li className="w-[20%] text-center py-5">{formatDate(res.date)}</li>
+                      <li className="w-[15%] text-center py-5">{res.startTime}</li>
                       <li className="w-[15%] text-center py-5">
                         <span
                           className={
@@ -188,7 +205,7 @@ export default function CheckPage() {
                               : 'text-[#999]'
                           }
                         >
-                          {res.status === 'confirmed' ? '확인' : '취소'}
+                          {statusLabel(res.status)}
                         </span>
                       </li>
                     </ul>

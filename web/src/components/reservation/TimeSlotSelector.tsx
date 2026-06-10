@@ -1,9 +1,9 @@
 'use client';
 
-import type { TimeSlot } from '@/types/reservation';
+import type { CalendarTimeSlot } from '@/types/reservation';
 
 interface TimeSlotSelectorProps {
-  timeSlots: TimeSlot[];
+  timeSlots: CalendarTimeSlot[];
   selectedSlotId: string | null;
   onSlotSelect: (slotId: string) => void;
   disabled?: boolean;

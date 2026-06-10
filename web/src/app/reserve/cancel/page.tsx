@@ -2,17 +2,17 @@
 
 import { useState, useCallback } from 'react';
 import Link from 'next/link';
-import type { LookupResponse, ReservationDetail, CancelResponse } from '@/types/reservation';
+import type { LookupResponse, LookupReservation, CancelResponse } from '@/types/reservation';
 
 export default function CancelPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [reservations, setReservations] = useState<ReservationDetail[]>([]);
+  const [reservations, setReservations] = useState<LookupReservation[]>([]);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [cancellingId, setCancellingId] = useState<string | null>(null);
-  const [cancelSuccess, setCancelSuccess] = useState<string | null>(null);
+  const [cancellingId, setCancellingId] = useState<number | null>(null);
+  const [cancelSuccess, setCancelSuccess] = useState<number | null>(null);
 
   /** 예약 조회 */
   const handleLookup = useCallback(async () => {
@@ -35,7 +35,7 @@ export default function CancelPage() {
     try {
       const params = new URLSearchParams({
         name: name.trim(),
-        phone: phone.trim(),
+        phone: phone.trim().replace(/\D/g, ''),
       });
       const res = await fetch(`/api/reservations/lookup?${params}`);
 
@@ -43,9 +43,12 @@ export default function CancelPage() {
         const data: LookupResponse = await res.json();
         setReservations(data.reservations);
       } else {
+        const data = await res.json();
+        setError(data.error || '조회 중 오류가 발생했습니다.');
         setReservations([]);
       }
     } catch {
+      setError('네트워크 오류가 발생했습니다.');
       setReservations([]);
     } finally {
       setIsLoading(false);
@@ -55,15 +58,19 @@ export default function CancelPage() {
 
   /** 예약 취소 */
   const handleCancel = useCallback(
-    async (reservationId: string) => {
+    async (reservationId: number) => {
       if (!confirm('예약을 취소하시겠습니까?')) return;
 
       setCancellingId(reservationId);
       setError(null);
 
       try {
+        // Why: 취소 API는 본인 확인을 위해 전화번호를 요구한다.
+        //   조회에 사용한 phone(숫자만)을 그대로 전송한다.
         const res = await fetch(`/api/reservations/${reservationId}/cancel`, {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: phone.replace(/\D/g, '') }),
         });
 
         if (res.ok) {
@@ -74,7 +81,7 @@ export default function CancelPage() {
             setReservations((prev) =>
               prev.map((r) =>
                 r.id === reservationId
-                  ? { ...r, status: 'cancelled' as const }
+                  ? { ...r, status: 'canceled' as const }
                   : r
               )
             );
@@ -82,32 +89,33 @@ export default function CancelPage() {
             setError(result.error || '취소에 실패했습니다.');
           }
         } else {
-          // API 미연동 시 데모 성공 처리
-          setCancelSuccess(reservationId);
-          setReservations((prev) =>
-            prev.map((r) =>
-              r.id === reservationId
-                ? { ...r, status: 'cancelled' as const }
-                : r
-            )
-          );
+          const data = await res.json();
+          setError(data.error || '취소에 실패했습니다.');
         }
       } catch {
-        // 네트워크 오류 시 데모 성공 처리
-        setCancelSuccess(reservationId);
-        setReservations((prev) =>
-          prev.map((r) =>
-            r.id === reservationId
-              ? { ...r, status: 'cancelled' as const }
-              : r
-          )
-        );
+        setError('네트워크 오류가 발생했습니다.');
       } finally {
         setCancellingId(null);
       }
     },
-    []
+    [phone]
   );
+
+  /** 날짜 포맷팅 */
+  function formatDate(dateStr: string): string {
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    } catch {
+      return dateStr;
+    }
+  }
+
+  /** 상태 표시 */
+  function statusLabel(status: string): string {
+    return status === 'confirmed' ? '확인됨' : '취소됨';
+  }
 
   return (
     <div className="min-h-screen bg-[#f5f5f5]" style={{ fontFamily: "'Noto Sans KR', sans-serif" }}>
@@ -230,20 +238,20 @@ export default function CancelPage() {
                       <ul className="list-none p-0 m-0 space-y-[10px]">
                         <li>
                           <h2 className="text-[15px] font-semibold m-0">
-                            {res.name} / {res.building}동 {res.unit}호
+                            {res.name} / {res.buildingNo}동 {res.unitNo}호
                           </h2>
                         </li>
                         <li className="text-[13px]">
                           <span className="font-normal">날짜:</span>{' '}
-                          <span className="font-normal">{res.date}</span>
+                          <span className="font-normal">{formatDate(res.date)}</span>
                         </li>
                         <li className="text-[13px]">
                           <span className="font-normal">시간:</span>{' '}
-                          <span className="font-normal">{res.timeSlot}</span>
+                          <span className="font-normal">{res.startTime}</span>
                         </li>
                         <li className="text-[13px]">
                           <span className="font-normal">인원:</span>{' '}
-                          <span className="font-normal">{res.count}명</span>
+                          <span className="font-normal">{res.headCount}명</span>
                         </li>
                         <li className="text-[13px]">
                           <span className="font-normal">상태:</span>{' '}
@@ -254,7 +262,7 @@ export default function CancelPage() {
                                 : 'text-[#999]'
                             }
                           >
-                            {res.status === 'confirmed' ? '확인됨' : '취소됨'}
+                            {statusLabel(res.status)}
                           </span>
                         </li>
                       </ul>
